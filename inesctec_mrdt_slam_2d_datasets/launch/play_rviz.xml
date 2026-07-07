@@ -1,0 +1,13 @@
+<launch>
+
+  <arg name="conf"     default="rviz"/>
+  <arg name="frame_id" default="odom"/>
+  <arg name="rviz"     default="true"/>
+
+  <node pkg="rviz" type="rviz" name="rviz_datasets_play"
+      args="-d $(dirname)/../rviz/$(arg conf).rviz -f $(arg frame_id)"
+      clear_params="true"
+      output="screen"
+      if="$(arg rviz)"/>
+
+</launch>

@@ -1,0 +1,126 @@
+FROM osrf/ros:noetic-desktop-full
+
+SHELL ["/bin/bash", "-c"]
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Basic dependencies
+RUN apt-get update && apt-get install -y \
+  sudo            \
+  wget            \
+  curl            \
+  vim             \
+  nano            \
+  bash-completion \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+  build-essential       \
+  clang                 \
+  clangd                \
+  clang-format          \
+  clang-tidy            \
+  clang-tools           \
+  cmake                 \
+  gdb                   \
+  git                   \
+  libsuitesparse-dev    \
+  freeglut3-dev         \
+  libqglviewer-dev-qt5  \
+  libyaml-cpp-dev       \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Robot Operating System (ROS) dependencies
+RUN apt-get update && apt-get install -y \
+  python3-catkin-tools             \
+  python3-rosdep                   \
+  python3-rosinstall               \
+  python3-rosinstall-generator     \
+  python3-wstool                   \
+  ros-noetic-teleop-tools          \
+  ros-noetic-teleop-twist-joy      \
+  ros-noetic-teleop-twist-keyboard \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Stage Simulator dependencies
+RUN apt-get update && apt-get install -y \
+  --no-install-recommends tzdata         \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y \
+  libjpeg-dev       \
+  libpng-dev        \
+  libltdl-dev       \
+  libfltk1.3-dev    \
+  libglu1-mesa-dev  \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/ros1noetic/
+RUN git clone https://github.com/sousarbarb/Stage.git
+
+RUN cd Stage                                                            && \
+  mkdir build                                                           && \
+  cd build                                                              && \
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/stage .. && \
+  make -j$(nproc)                                                       && \
+  make install                                                          && \
+  ldconfig --verbose /opt/stage/lib/
+
+# Install nanoflann dependencies
+RUN apt-get update && apt-get install -y \
+  build-essential \
+  cmake           \
+  libgtest-dev    \
+  libeigen3-dev   \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/ros1noetic/
+RUN git clone https://github.com/jlblancoc/nanoflann.git
+
+RUN cd nanoflann                      && \
+  mkdir build                         && \
+  cd build                            && \
+  export VERBOSE=true                 && \
+  cmake .. -DCMAKE_BUILD_TYPE=Release && \
+  sudo cmake --install .
+
+# Setup Development Environment
+WORKDIR /home/ros1noetic/
+RUN mkdir -p srrg_ws/src && \
+  mkdir -p ros_ws/src
+
+WORKDIR /home/ros1noetic/srrg_ws/src/
+RUN git clone --recurse-submodules -j8 https://gitlab.com/sousarbarb_srrg-software/srrg_system.git
+
+WORKDIR /home/ros1noetic/srrg_ws/
+RUN source /opt/ros/noetic/setup.bash                  && \
+  catkin_make --force-cmake -DCMAKE_BUILD_TYPE=Release && \
+  catkin_make install -DCMAKE_INSTALL_PREFIX=/opt/ros/srrg_software
+
+# Note: after building the Docker image and creating your Distrobox,
+#       you will need to create the static link with ln -s for the development code
+
+# Setup ROS environment in bashrc
+RUN echo "PS1='\${debian_chroot:+(\$debian_chroot)}\[\033[1;37;45m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> /etc/skel/.bashrc && \
+  echo 'case "\$TERM" in' >> /etc/skel/.bashrc && \
+  echo 'xterm*|rxvt*)' >> /etc/skel/.bashrc && \
+  echo '    PS1="\[\e]0;\${debian_chroot:+(\$debian_chroot)}\u@\h: \w\a\]\$PS1"' >> /etc/skel/.bashrc && \
+  echo '    ;;' >> /etc/skel/.bashrc && \
+  echo '*)' >> /etc/skel/.bashrc && \
+  echo '    ;;' >> /etc/skel/.bashrc && \
+  echo 'esac' >> /etc/skel/.bashrc && \
+  echo "source /opt/ros/noetic/setup.bash" >> /etc/skel/.bashrc && \
+  echo "source /opt/ros/srrg_software/setup.bash 2>/dev/null || true" >> /etc/skel/.bashrc && \
+  echo "source /home/ros1noetic/ros_ws/devel_release/setup.bash 2>/dev/null || true" >> /etc/skel/.bashrc
+
+# Fix file permissions
+RUN chown -R 1000:1000 /home/ros1noetic/
+
+# Set environment variables for GUI support (ROS 1 not compatible with Wayland)
+ENV QT_QPA_PLATFORM=xcb
+
+# Setup entrypoint (probably overwritten by Distrobox...)
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["/bin/bash"]

@@ -1,0 +1,199 @@
+base_frame: "avantgarde/base_footprint"
+
+ext_odom_use: false
+# ext_odom_impl: "tf"
+# ext_odom_frame: "odom"
+# ext_odom_pub_tf: false
+# ext_odom_pub_msg: false
+# ext_odom_invert_tf: false
+
+laser_invert_scan: false
+laser_pub_tf_static: false
+# laser_frame: ""
+# laser_pose_x: 0.0
+# laser_pose_y: 0.0
+# laser_pose_th: 0.0
+
+slam_pub_pose_tf: true
+slam_pub_pose_msg: true
+slam_pose_invert_tf: true
+slam_pub_odom_tf: false
+slam_pub_odom_msg: false
+slam_odom_invert_tf: false
+slam_pose_frame: "map"
+# slam_odom_frame: "odom_laser"
+
+## SLAM OFFLINE CORRECTED POSE (CONSIDERING LOOP CLOSURE CORRECTION)
+slam_log_pose_corrected: true
+
+## SLAM BACKEND SOLVER OPTIMIZER
+
+slam_solver_debug: true
+slam_solver_verbose: false
+slam_solver_damping: 1.0
+slam_solver_max_iterations: 100
+slam_solver_criteria_type: "stepnorm"
+slam_solver_criteria_epsilon: 1e-5
+slam_solver_dbg_ogl_interval: 0
+slam_solver_dbg_ogl_mode: "computeend"
+
+slam_factor_info_use_tracker: true
+# slam_factor_info_x: 1.0
+# slam_factor_info_y: 1.0
+# slam_factor_info_th: 10.0
+
+slam_factor_local_map_update: false
+
+## SLAM LOOP CLOSURE
+
+slam_loop_enable: true
+slam_loop_use_same_place_guess: false
+slam_loop_use_pose_graph_guess: true
+slam_loop_min_graph_len: 5
+slam_loop_max_dist: 2.50
+
+# slam_loop_aligner_type: "point2plane"
+slam_loop_aligner_debug: false
+slam_loop_aligner_solver_verbose: false
+# slam_loop_aligner_solver_damping: 1.0
+slam_loop_aligner_solver_max_iterations: 20
+# slam_loop_aligner_solver_criteria_type: "stepnorm"
+# slam_loop_aligner_solver_criteria_epsilon: 1e-5
+# slam_loop_aligner_solver_robustifier_type: "cauchy"
+slam_loop_aligner_solver_robustifier_num_iterations_coarse: 5
+slam_loop_aligner_solver_robustifier_threshold_coarse: 0.25
+slam_loop_aligner_solver_robustifier_threshold_fine: 0.01
+slam_loop_aligner_failure_ratio_inliers: 0.70
+slam_loop_aligner_failure_chi_inliers: 0.001
+# slam_loop_aligner_dbg_ogl_interval: 0
+# slam_loop_aligner_dbg_ogl_mode: ""
+# slam_loop_aligner_dbg_ogl_show_correspondences: false
+# slam_loop_aligner_dbg_ogl_show_normals: false
+# slam_loop_aligner_dist_map_res: 0.01
+# slam_loop_aligner_dist_map_size: 10.0
+# slam_loop_aligner_dist_map_max_dist: 0.25
+# slam_loop_aligner_solver_regularize_correspondences: true
+
+## SLAM RELOCALIZATION
+
+slam_relocalization_enable: false
+
+###################
+##### TRACKER #####
+###################
+
+tracker_use_ext_odom_as_init: false
+tracker_use_ext_odom_as_prior: false
+
+## SPLITTING CRITERIA
+# - none         : do not specify tracker_split_criteria_type parameter
+# - rotation     : minimum travel heading
+# - translation  : minimum travel distance
+# - viewpoint    : minimum travel heading and/or distance
+# - inliers ratio: tracker's alignenment results w/ max distance
+#
+# tracker_split_criteria_type: "rotation"
+# tracker_split_criteria_min_travel_heading: 30.0
+#
+# tracker_split_criteria_type: "translation"
+# tracker_split_criteria_min_travel_dist: 0.50
+#
+# tracker_split_criteria_type: "viewpoint"
+# tracker_split_criteria_min_travel_dist: 0.50
+# tracker_split_criteria_min_travel_heading: 30.0
+#
+# tracker_split_criteria_type: "inliers"
+# tracker_split_criteria_min_travel_dist: 0.10
+# tracker_split_criteria_min_travel_heading: 5.0
+# tracker_split_criteria_max_ratio_inliers: 0.60
+# tracker_split_criteria_max_travel_dist: -1.0
+# tracker_split_criteria_max_travel_heading: -1.0
+#
+# tracker_split_criteria_type: "time"
+# tracker_split_criteria_min_time_interval: 5.0
+# tracker_split_criteria_max_ratio_inliers: 0.75
+
+tracker_split_criteria_type: "inliers"
+tracker_split_criteria_min_travel_dist: 0.20
+tracker_split_criteria_min_travel_heading: 15.0
+tracker_split_criteria_max_ratio_inliers: 0.60
+tracker_split_criteria_max_travel_dist: -1.0
+tracker_split_criteria_max_travel_heading: -1.0
+
+## MERGING CRITERIA
+# - none         : do not specify tracker_merge_criteria_type parameter
+# - rotation     : minimum travel heading
+# - translation  : minimum travel distance
+# - viewpoint    : minimum travel heading and/or distance
+#
+# tracker_merge_criteria_type: "rotation"
+# tracker_merge_criteria_min_travel_heading: 5.0
+#
+# tracker_merge_criteria_type: "translation"
+# tracker_merge_criteria_min_travel_dist: 0.10
+#
+# tracker_merge_criteria_type: "viewpoint"
+# tracker_merge_criteria_min_travel_dist: 0.10
+# tracker_merge_criteria_min_travel_heading: 5.0
+#
+# tracker_merge_criteria_type: "inliers"
+# tracker_merge_criteria_min_travel_dist: 0.10
+# tracker_merge_criteria_min_travel_heading: 5.0
+# tracker_merge_criteria_max_ratio_inliers: 0.80
+# tracker_merge_criteria_max_travel_dist: -1.0
+# tracker_merge_criteria_max_travel_heading: -1.0
+#
+# tracker_merge_criteria_type: "time"
+# tracker_merge_criteria_min_time_interval: 1.0
+# tracker_merge_criteria_max_ratio_inliers: 0.80
+
+# tracker_merge_criteria_type: "viewpoint"
+# tracker_merge_criteria_min_travel_dist: 0.10
+# tracker_merge_criteria_min_travel_heading: 5.0
+
+## MERGER
+
+# tracker_merger_ray_min_dist_through: 0.20
+# tracker_merger_ray_min_dist_add_new: 0.20
+# tracker_merger_enable_avg: false
+# tracker_merger_weight_old: 0.5
+# tracker_merger_weight_new: 0.5
+
+## ALIGNER
+
+tracker_aligner_type: "point2point"
+
+# - aligner base parametrisation
+tracker_aligner_debug: true
+tracker_aligner_solver_verbose: false
+tracker_aligner_solver_damping: 1.0
+tracker_aligner_solver_max_iterations: 15
+tracker_aligner_solver_criteria_type: "stepnorm"
+tracker_aligner_solver_criteria_epsilon: 1e-5
+tracker_aligner_solver_robustifier_type: "cauchy"
+tracker_aligner_solver_robustifier_threshold: 0.01
+tracker_aligner_failure_ratio_inliers: 0.30
+tracker_aligner_failure_chi_inliers: -1.0
+tracker_aligner_dbg_ogl_interval: 0
+tracker_aligner_dbg_ogl_mode: "computeend"
+tracker_aligner_dbg_ogl_show_correspondences: true
+tracker_aligner_dbg_ogl_show_normals: false
+
+# - aligner distance map parametrisation
+tracker_aligner_dist_map_res: 0.05
+tracker_aligner_dist_map_size: 20.0
+tracker_aligner_dist_map_max_dist: 0.50
+
+tracker_solver_regularize_correspondences: false
+
+## PREPROCESS
+# - voxelization: average the points in the same cell on a grid pattern
+#   (should have better results on removing the radia effect of 2D lasers)
+# - normals computation: for point-to-plane error computation
+
+tracker_enable_voxelization: true
+# tracker_voxel_scale: 0.01
+# tracker_normals_computator_min_pts: 5
+# tracker_normals_computator_radius: 0.15
+# tracker_range_min: 0.30
+tracker_range_max: 20.0

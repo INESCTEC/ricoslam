@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="robot_id" default="$(optenv ROBOT_ID unnamed_robot)" />
+  <arg name="rviz_name" default="rviz" />
+  <arg name="rviz_directory" default="$(dirname)" />
+  <arg name="rviz_file" default="rviz.rviz" />
+
+  <group ns="$(arg robot_id)">
+
+    <node pkg="rviz" type="rviz" name="$(arg rviz_name)"
+      args="-d $(arg rviz_directory)/$(arg rviz_file)"
+      clear_params="true" output="$(optenv ROBOT_OUTPUT screen)" />
+
+  </group>
+
+</launch>

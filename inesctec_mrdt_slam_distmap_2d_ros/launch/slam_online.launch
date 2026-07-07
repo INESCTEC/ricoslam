@@ -1,0 +1,21 @@
+<launch>
+
+  <arg name="odom_topic" default="/odom" />
+  <arg name="scan_topic" default="/scan" />
+
+
+  <node pkg="inesctec_mrdt_slam_distmap_2d_ros" type="slam_online"
+    name="slam_online"
+    clear_params="true" output="screen">
+    <!-- launch-prefix="gdb -ex run -\-args"> -->
+
+    <remap from="~/ext_odom" to="$(arg odom_topic)" />
+    <remap from="~/scan" to="$(arg scan_topic)" />
+
+    <rosparam command="load"
+      file="$(dirname)/../config/slam.yaml"
+      subst_value="true" />
+
+  </node>
+
+</launch>

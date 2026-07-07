@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd"
+    schematypens="http://www.w3.org/2001/XMLSchema"?>
+
+<package format="3">
+
+  <name>inesctec_mrdt_slam_distmap_2d</name>
+
+  <version>0.0.0</version>
+
+  <description>
+    This ROS package contains the C++ classes and structs definitions required
+    to execute Simultaneous Localization and Mapping (SLAM) based on a distance
+    map matching formulation. Most data structures are based on the SRRG
+    Software (https://gitlab.com/srrg-software/) developed by the Robots Vision
+    and Perception Group (https://rvp-group.net/) led by Prof. Dr. Giorgio
+    Grisetti. These structures are here redefined to understand better how they
+    work, add unit testing, document the structs and classes, and possibly some
+    added functionality when needed.
+    The main goal of this ROS package is to try to be as independent from the
+    ROS framework as possibly, in exception of the package's dependencies.
+  </description>
+
+  <maintainer email="rbs@fe.up.pt">Ricardo B. Sousa</maintainer>
+
+  <license>LGPLv3</license>
+
+  <author email="amoreira@fe.up.pt">António Paulo Moreira</author>
+  <author email="grisetti@diag.uniroma1.it">Giorgio Grisetti</author>
+  <author email="heber.m.sobreira@inesctec.pt">Héber Miguel Sobreira</author>
+  <author email="mss@isep.ipp.pt">Manuel F. Silva</author>
+  <author email="rbs@fe.up.pt">Ricardo B. Sousa</author>
+
+  <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
+  <buildtool_depend condition="$ROS_VERSION == 1">catkin</buildtool_depend>
+
+  <depend condition="$ROS_VERSION == 1">roscpp</depend>
+
+  <depend>std_srvs</depend>
+
+  <depend>srrg_cmake_modules</depend>
+  <depend>srrg2_core</depend>
+  <depend>srrg2_solver</depend>
+  <depend>srrg2_qgl_viewport</depend>
+
+  <depend>Eigen3</depend>
+  <depend>OpenCV</depend>
+  <depend>yaml-cpp</depend>
+
+  <test_depend condition="$ROS_VERSION == 2">ament_lint_auto</test_depend>
+  <test_depend condition="$ROS_VERSION == 2">ament_lint_common</test_depend>
+
+  <export>
+    <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
+    <build_type condition="$ROS_VERSION == 1">catkin</build_type>
+  </export>
+
+</package>

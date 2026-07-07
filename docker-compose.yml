@@ -1,0 +1,131 @@
+services:
+  ros1noetic:
+    image: osrf/ros:noetic-desktop-full
+    container_name: ros1noetic
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+      - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}
+      - /mnt/data/datasets/:/home/datasets/
+      # - /home/sousarbarb97/dev/phd/srrg-software/srrg_system:/home/srrg_ws/src/srrg_system/
+      - ./:/home/ros_ws/src/inesctec_mrdt_slam_distmap_2d/
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_QPA_PLATFORM=xcb
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    tty: true
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  ros2foxy:
+    image: osrf/ros:foxy-desktop
+    container_name: ros2foxy
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+      - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}
+      - /mnt/data/datasets/:/home/datasets/
+      # - /home/sousarbarb97/dev/phd/srrg-software/srrg_system:/home/srrg_ws/src/srrg_system/
+      - ./:/home/ros_ws/src/inesctec_mrdt_slam_distmap_2d/
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_QPA_PLATFORM=xcb
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    tty: true
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  ros2humble:
+    image: osrf/ros:humble-desktop-full
+    container_name: ros2humble
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+      - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}
+      - /mnt/data/datasets/:/home/datasets/
+      # - /home/sousarbarb97/dev/phd/srrg-software/srrg_system:/home/srrg_ws/src/srrg_system/
+      - ./:/home/ros_ws/src/inesctec_mrdt_slam_distmap_2d/
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_QPA_PLATFORM=xcb
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    tty: true
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  ros2jazzy:
+    image: osrf/ros:jazzy-desktop-full
+    container_name: ros2jazzy
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+      - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}
+      - /mnt/data/datasets/:/home/datasets/
+      # - /home/sousarbarb97/dev/phd/srrg-software/srrg_system:/home/srrg_ws/src/srrg_system/
+      - ./:/home/ros_ws/src/inesctec_mrdt_slam_distmap_2d/
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_QPA_PLATFORM=xcb
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    tty: true
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  ros2rolling:
+    image: osrf/ros:rolling-desktop-full
+    container_name: ros2rolling
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+      - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}
+      - /mnt/data/datasets/:/home/datasets/
+      # - /home/sousarbarb97/dev/phd/srrg-software/srrg_system:/home/srrg_ws/src/srrg_system/
+      - ./:/home/ros_ws/src/inesctec_mrdt_slam_distmap_2d/
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_QPA_PLATFORM=xcb
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    tty: true
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

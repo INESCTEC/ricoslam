@@ -1,0 +1,79 @@
+## OFFLINE GLOBAL BUNDLE ADJUSTMENT (OGBA)
+ogba_type: "point2point"
+ogba_debug: true
+ogba_solver_verbose: true
+ogba_solver_damping: 1.0
+ogba_solver_max_iterations: 1000
+ogba_solver_criteria_type: "stepnorm"
+ogba_solver_criteria_epsilon: 1e-5
+ogba_solver_robustifier_type: "cauchy"
+ogba_solver_robustifier_threshold: 0.01
+ogba_solver_dbg_ogl_interval: 0
+ogba_solver_dbg_ogl_mode: "iterationend"
+
+## PREPROCESS
+# - voxelization: average the points in the same cell on a grid pattern
+#   (should have better results on removing the radia effect of 2D lasers)
+# - normals computation: for point-to-plane error computation
+enable_voxelization: true
+# voxel_scale: 0.01 # (probably always set it to the same distance map res)
+# normals_computator_min_pts: 5
+# normals_computator_radius: 0.15
+# range_min: 0.50
+range_max: 10.0
+
+## DISTANCE MAP PARAMETERS
+dist_map_res: 0.01
+dist_map_size: 10.0
+dist_map_max_dist: 2.50
+
+## POSE GRAPH CRITERIA
+## (NODES CREATION UPON GLOBAL MAP CONSTRUCTION EVALUATION)
+# - rotation     : minimum travel heading
+# - translation  : minimum travel distance
+# - gridcell     : changing grid cell (based on pose w.r.t. world)
+# - viewpoint    : minimum travel heading and/or distance
+# - inliers ratio: tracker's alignment results w/ max distance
+# - time         : latest tracker's scan message vs previous merged scan
+#
+# graph_criteria_type: "rotation"
+# graph_criteria_min_travel_heading: 5.0
+#
+# graph_criteria_type: "translation"
+# graph_criteria_min_travel_dist: 0.10
+#
+# graph_criteria_type: "gridcell" # probably requires diff impl to work with global cells
+# graph_criteria_cell_size: 0.25
+#
+# graph_criteria_type: "viewpoint"
+# graph_criteria_min_travel_dist: 5.0
+# graph_criteria_min_travel_heading: 10.0
+#
+# graph_criteria_type: "inliers"
+# graph_criteria_min_travel_dist: -1.0
+# graph_criteria_min_travel_heading: -1.0
+# graph_criteria_max_ratio_inliers: 0.80
+# graph_criteria_max_travel_dist: -1.0
+# graph_criteria_max_travel_heading: -1.0
+#
+# graph_criteria_type: "time"
+# graph_criteria_min_time_interval: 1.0
+# graph_criteria_max_ratio_inliers: 0.90
+
+graph_criteria_type: "inliers"
+graph_criteria_min_travel_dist: -1.0
+graph_criteria_min_travel_heading: -1.0
+graph_criteria_max_ratio_inliers: 0.90
+graph_criteria_max_travel_dist: -1.0
+graph_criteria_max_travel_heading: -1.0
+
+## MERGER (ONLY REQUIRED FOR INLIERS-BASED GRAPH CRITERIA)
+# merger_ray_min_dist_through: 0.20
+# merger_ray_min_dist_add_new: 0.20
+# merger_enable_avg: false
+# merger_weight_old: 0.5
+# merger_weight_new: 0.5
+
+## CO-VISIBILITY GRAPH
+covisibility_ratio_inliers: 0.60
+covisibility_nn_distance: 0.20

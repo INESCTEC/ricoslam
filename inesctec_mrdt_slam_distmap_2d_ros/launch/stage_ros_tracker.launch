@@ -1,0 +1,32 @@
+<launch>
+
+  <include file="$(dirname)/tracker.launch">
+    <arg name="odom_topic" value="/odom" />
+    <arg name="scan_topic" value="/base_scan" />
+  </include>
+
+  <include file="$(dirname)/rviz.launch">
+    <arg name="robot_id" value="/" />
+    <arg name="rviz_name" value="rivz_odom_laser" />
+    <arg name="rviz_directory" value="$(dirname)/../rviz" />
+    <arg name="rviz_file" value="odom_laser.rviz" />
+  </include>
+
+  <include file="$(dirname)/rviz.launch">
+    <arg name="robot_id" value="/" />
+    <arg name="rviz_name" value="rivz_odom_wh" />
+    <arg name="rviz_directory" value="$(dirname)/../rviz" />
+    <arg name="rviz_file" value="odom_wh.rviz" />
+  </include>
+
+  <include file="$(find stage_ros)/launch/stageros.launch">
+    <arg name="stageros_args" value="-p" />
+    <arg name="pub_gt_tf" value="true" />
+  </include>
+
+  <!-- <include file="$(find stage_ros)/launch/teleop_twist_keyboard.launch">
+    <arg name="cmd_vel_topic" value="/cmd_vel" />
+    <arg name="node_start_delay" value="5.0" />
+  </include> -->
+
+</launch>

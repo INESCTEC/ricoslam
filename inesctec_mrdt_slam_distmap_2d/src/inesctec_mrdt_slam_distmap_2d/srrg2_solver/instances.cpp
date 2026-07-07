@@ -1,0 +1,1550 @@
+#include "inesctec_mrdt_slam_distmap_2d/srrg2_solver/instances.hpp"
+
+// SRRG Software
+#include <srrg2_core/srrg_boss/serializable.h>
+#include <srrg2_solver/solver_core/instance_macros.h>
+#include <srrg2_solver/solver_core/instances.h>
+#include <srrg2_solver/solver_core/internals/linear_solvers/instances.h>
+#include <srrg2_solver/variables_and_factors/types_2d/all_types.h>
+#include <srrg2_solver/variables_and_factors/types_2d/instances.h>
+
+#include <srrg2_solver/solver_core/solvers_all_impl.hpp>
+
+#include "inesctec_mrdt_slam_distmap_2d/srrg2_solver/all_types.hpp"
+
+namespace srrg2_solver
+{
+
+using namespace srrg2_core;
+
+void inesctec_mrdt_slam_distmap_2d_srrg2_solver_registerTypes()
+{
+  BOSS_REGISTER_CLASS(VariableSE2DistanceMapStaticPoint2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticPoint2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(VariableSE2DistanceMapNanoStaticPoint2fVectorCloudRight);
+
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapStaticPointNormal2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticPointNormal2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRight);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapNanoStaticPointNormal2fVectorCloudRight);
+
+  BOSS_REGISTER_CLASS(VariableSE2DistanceMapStaticPoint2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(VariableSE2DistanceMapSparseStaticPoint2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(VariableSE2DistanceMapNanoStaticPoint2fVectorCloudLeft);
+
+  BOSS_REGISTER_CLASS(VariableSE2DistanceMapStaticPointNormal2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticPointNormal2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeft);
+  BOSS_REGISTER_CLASS(
+      VariableSE2DistanceMapNanoStaticPointNormal2fVectorCloudLeft);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPriorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPriorErrorFactor);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  // ICP error factors
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+  BOSS_REGISTER_CLASS(
+      SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+}
+// void inesctec_mrdt_slam_distmap_2d_srrg2_solver_registerTypes()
+
+INSTANTIATE(VariableSE2DistanceMapStaticPoint2fVectorCloudRight);
+INSTANTIATE(VariableSE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRight);
+INSTANTIATE(VariableSE2DistanceMapSparseStaticPoint2fVectorCloudRight);
+INSTANTIATE(
+    VariableSE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRight);
+INSTANTIATE(VariableSE2DistanceMapNanoStaticPoint2fVectorCloudRight);
+
+INSTANTIATE(VariableSE2DistanceMapStaticPointNormal2fVectorCloudRight);
+INSTANTIATE(
+    VariableSE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRight);
+INSTANTIATE(VariableSE2DistanceMapSparseStaticPointNormal2fVectorCloudRight);
+INSTANTIATE(
+    VariableSE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRight);
+INSTANTIATE(VariableSE2DistanceMapNanoStaticPointNormal2fVectorCloudRight);
+
+INSTANTIATE(VariableSE2DistanceMapStaticPoint2fVectorCloudLeft);
+INSTANTIATE(VariableSE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeft);
+INSTANTIATE(VariableSE2DistanceMapSparseStaticPoint2fVectorCloudLeft);
+INSTANTIATE(
+    VariableSE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeft);
+INSTANTIATE(VariableSE2DistanceMapNanoStaticPoint2fVectorCloudLeft);
+
+INSTANTIATE(VariableSE2DistanceMapStaticPointNormal2fVectorCloudLeft);
+INSTANTIATE(
+    VariableSE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeft);
+INSTANTIATE(VariableSE2DistanceMapSparseStaticPointNormal2fVectorCloudLeft);
+INSTANTIATE(
+    VariableSE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeft);
+INSTANTIATE(VariableSE2DistanceMapNanoStaticPointNormal2fVectorCloudLeft);
+
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseGeodesicErrorFactor);
+
+INSTANTIATE(SE2DistanceMapStaticPoint2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(SE2DistanceMapSparseStaticPoint2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(SE2DistanceMapNanoStaticPoint2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(SE2DistanceMapStaticPointNormal2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPriorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPriorErrorFactor);
+
+INSTANTIATE(SE2DistanceMapStaticPoint2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundleWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightPosePoseBundlePlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+// ICP error factors
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPointWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudRightICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+INSTANTIATE(SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactor);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPoint2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapSparseStaticWith2ndDerivPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+INSTANTIATE(
+    SE2DistanceMapNanoStaticPointNormal2fVectorCloudLeftICPPointPlaneWithSensorErrorFactorCorrespondenceFreeDriven);
+
+}  // namespace srrg2_solver

@@ -1,0 +1,226 @@
+<launch>
+
+  <arg name="odom_topic" default="/odom" />
+  <arg name="scan_topic" default="/scan" />
+
+  <node pkg="inesctec_mrdt_slam_distmap_2d_ros" exec="slam_online"
+    name="slam_online">
+
+    <remap from="~/ext_odom" to="$(var odom_topic)" />
+    <remap from="~/scan" to="$(var scan_topic)" />
+
+    <param name="base_frame" value="base_link" />
+
+    <param name="ext_odom_use" value="true" />
+    <param name="ext_odom_impl" value="tf" />
+    <param name="ext_odom_frame" value="odom" />
+    <param name="ext_odom_pub_tf" value="false" />
+    <param name="ext_odom_pub_msg" value="false" />
+    <param name="ext_odom_invert_tf" value="false" />
+
+    <param name="laser_invert_scan" value="false" />
+    <param name="laser_pub_tf_static" value="false" />
+    <!-- <param name="laser_frame" value=""/> -->
+    <!-- <param name="laser_pose_x" value="0.0"/> -->
+    <!-- <param name="laser_pose_y" value="0.0"/> -->
+    <!-- <param name="laser_pose_th" value="0.0"/> -->
+
+    <param name="slam_pub_pose_tf" value="true"/>
+    <param name="slam_pub_pose_msg" value="true"/>
+    <param name="slam_pose_invert_tf" value="true"/>
+    <param name="slam_pub_odom_tf" value="true"/>
+    <param name="slam_pub_odom_msg" value="true"/>
+    <param name="slam_odom_invert_tf" value="true"/>
+    <param name="slam_pose_frame" value="map"/>
+    <param name="slam_odom_frame" value="odom_laser_rico"/>
+
+    <param name="slam_log_pose_corrected" value="true"/>
+
+    <param name="slam_solver_debug" value="true"/>
+    <param name="slam_solver_verbose" value="false"/>
+    <param name="slam_solver_damping" value="1.0"/>
+    <param name="slam_solver_max_iterations" value="100"/>
+    <param name="slam_solver_criteria_type" value="stepnorm"/>
+    <param name="slam_solver_criteria_epsilon" value="0.00001"/>
+    <param name="slam_solver_dbg_ogl_interval" value="0"/>
+    <param name="slam_solver_dbg_ogl_mode" value="computeend"/>
+
+    <param name="slam_factor_info_use_tracker" value="true"/>
+    <!-- <param name="slam_factor_info_x" value="1.0"/> -->
+    <!-- <param name="slam_factor_info_y" value="1.0"/> -->
+    <!-- <param name="slam_factor_info_th" value="10.0"/> -->
+
+    <param name="slam_factor_local_map_update" value="false"/>
+
+    <param name="slam_loop_enable" value="true"/>
+    <param name="slam_loop_use_same_place_guess" value="false"/>
+    <param name="slam_loop_use_pose_graph_guess" value="true"/>
+    <param name="slam_loop_min_graph_len" value="5"/>
+    <param name="slam_loop_max_dist" value="2.50"/>
+
+    <param name="slam_loop_aligner_debug" value="false" />
+    <param name="slam_loop_aligner_solver_verbose" value="false" />
+    <!-- <param name="slam_loop_aligner_solver_damping" value="1.0" /> -->
+    <param name="slam_loop_aligner_solver_max_iterations" value="30" />
+    <!-- <param name="slam_loop_aligner_solver_criteria_type" value="stepnorm" /> -->
+    <!-- <param name="slam_loop_aligner_solver_criteria_epsilon" value="0.00001" /> -->
+    <!-- <param name="slam_loop_aligner_solver_robustifier_type" value="cauchy" /> -->
+    <param name="slam_loop_aligner_solver_robustifier_num_iterations_coarse" value="5" />
+    <param name="slam_loop_aligner_solver_robustifier_threshold_coarse" value="0.25" />
+    <param name="slam_loop_aligner_solver_robustifier_threshold_fine" value="0.01" />
+    <param name="slam_loop_aligner_failure_ratio_inliers" value="0.70" />
+    <param name="slam_loop_aligner_failure_chi_inliers" value="0.001" />
+    <!-- <param name="slam_loop_aligner_dbg_ogl_interval" value="0" /> -->
+    <!-- <param name="slam_loop_aligner_dbg_ogl_mode" value="computeend" /> -->
+    <!-- <param name="slam_loop_aligner_dbg_ogl_show_correspondences" value="false" /> -->
+    <!-- <param name="slam_loop_aligner_dbg_ogl_show_normals" value="false" /> -->
+    <!-- <param name="slam_loop_aligner_dist_map_res" value="0.01" /> -->
+    <!-- <param name="slam_loop_aligner_dist_map_size" value="10.0" /> -->
+    <!-- <param name="slam_loop_aligner_dist_map_max_dist" value="0.25" /> -->
+
+    <param name="slam_relocalization_enable" value="false"/>
+
+    <param name="tracker_use_ext_odom_as_init" value="true" />
+    <param name="tracker_use_ext_odom_as_prior" value="false" />
+
+    <!--
+## SPLITTING CRITERIA
+# - none         : do not specify tracker_split_criteria_type parameter
+# - empty        : only forcing through ROS API (splitting triggering service)
+# - rotation     : minimum travel heading
+# - translation  : minimum travel distance
+# - viewpoint    : minimum travel heading and/or distance
+# - gridcell     : grid square local area
+# - inliers ratio: tracker's alignenment results w/ max distance
+# - time         : time since previous split event
+#
+# tracker_split_criteria_type: "empty"
+#
+# tracker_split_criteria_type: "rotation"
+# tracker_split_criteria_min_travel_heading: 30.0
+#
+# tracker_split_criteria_type: "translation"
+# tracker_split_criteria_min_travel_dist: 0.50
+#
+# tracker_split_criteria_type: "viewpoint"
+# tracker_split_criteria_min_travel_dist: 0.50
+# tracker_split_criteria_min_travel_heading: 30.0
+#
+# tracker_split_criteria_type: "gridcell"
+# tracker_split_criteria_cell_size: 2.5
+#
+# tracker_split_criteria_type: "inliers"
+# tracker_split_criteria_min_travel_dist: 0.10
+# tracker_split_criteria_min_travel_heading: 5.0
+# tracker_split_criteria_max_ratio_inliers: 0.60
+# tracker_split_criteria_max_travel_dist: -1.0
+# tracker_split_criteria_max_travel_heading: -1.0
+#
+# tracker_split_criteria_type: "time"
+# tracker_split_criteria_min_time_interval: 5.0
+# tracker_split_criteria_max_ratio_inliers: 0.75
+ -->
+    <param name="tracker_split_criteria_type" value="inliers" />
+    <param name="tracker_split_criteria_min_travel_dist" value="0.10" />
+    <param name="tracker_split_criteria_min_travel_heading" value="5.0" />
+    <param name="tracker_split_criteria_max_ratio_inliers" value="0.60" />
+    <param name="tracker_split_criteria_max_travel_dist" value="-1.0" />
+    <param name="tracker_split_criteria_max_travel_heading" value="-1.0" />
+
+    <!--
+## MERGING CRITERIA
+# - none         : do not specify tracker_merge_criteria_type parameter
+# - empty        : only forcing through ROS API (merging triggering service)
+# - rotation     : minimum travel heading
+# - translation  : minimum travel distance
+# - viewpoint    : minimum travel heading and/or distance
+# - gridcell     : grid square local area
+# - inliers ratio: tracker's alignenment results w/ max distance
+# - time         : time since previous merge event
+#
+# tracker_merge_criteria_type: "empty"
+#
+# tracker_merge_criteria_type: "rotation"
+# tracker_merge_criteria_min_travel_heading: 5.0
+#
+# tracker_merge_criteria_type: "translation"
+# tracker_merge_criteria_min_travel_dist: 0.10
+#
+# tracker_merge_criteria_type: "viewpoint"
+# tracker_merge_criteria_min_travel_dist: 0.10
+# tracker_merge_criteria_min_travel_heading: 5.0
+#
+# tracker_merge_criteria_type: "gridcell"
+# tracker_merge_criteria_cell_size: 0.20
+#
+# tracker_merge_criteria_type: "inliers"
+# tracker_merge_criteria_min_travel_dist: 0.10
+# tracker_merge_criteria_min_travel_heading: 5.0
+# tracker_merge_criteria_max_ratio_inliers: 0.80
+# tracker_merge_criteria_max_travel_dist: -1.0
+# tracker_merge_criteria_max_travel_heading: -1.0
+#
+# tracker_merge_criteria_type: "time"
+# tracker_merge_criteria_min_time_interval: 1.0
+# tracker_merge_criteria_max_ratio_inliers: 0.80
+ -->
+    <param name="tracker_merge_criteria_type" value="viewpoint" />
+    <param name="tracker_merge_criteria_min_travel_dist" value="0.10" />
+    <param name="tracker_merge_criteria_min_travel_heading" value="5.0" />
+
+    <!-- ## MERGER -->
+
+    <param name="tracker_merger_ray_min_dist_through" value="0.20" />
+    <param name="tracker_merger_ray_min_dist_add_new" value="0.20" />
+    <param name="tracker_merger_enable_avg" value="false" />
+    <!-- <param name="tracker_merger_weight_old" value="0.5"/> -->
+    <!-- <param name="tracker_merger_weight_new" value="0.5"/> -->
+
+    <!-- ## ALIGNER -->
+
+    <param name="tracker_aligner_type" value="point2plane" />
+
+    <!-- # - aligner base parametrisation -->
+
+    <param name="tracker_aligner_debug" value="true" />
+    <param name="tracker_aligner_solver_verbose" value="false" />
+    <param name="tracker_aligner_solver_damping" value="1.0" />
+    <param name="tracker_aligner_solver_max_iterations" value="25" />
+    <param name="tracker_aligner_solver_criteria_type" value="stepnorm" />
+    <param name="tracker_aligner_solver_criteria_epsilon" value="0.00001" />
+    <param name="tracker_aligner_solver_robustifier_type" value="cauchy" />
+    <param name="tracker_aligner_solver_robustifier_num_iterations_coarse" value="10" />
+    <param name="tracker_aligner_solver_robustifier_threshold_coarse" value="0.025" />
+    <param name="tracker_aligner_solver_robustifier_threshold_fine" value="0.0025" />
+    <param name="tracker_aligner_failure_ratio_inliers" value="0.35" />
+    <param name="tracker_aligner_failure_chi_inliers" value="-1.0" />
+    <param name="tracker_aligner_dbg_ogl_interval" value="0" />
+    <param name="tracker_aligner_dbg_ogl_mode" value="computeend" />
+    <param name="tracker_aligner_dbg_ogl_show_correspondences" value="false" />
+    <param name="tracker_aligner_dbg_ogl_show_normals" value="false" />
+
+    <!-- # - aligner distance map parametrisation -->
+
+    <param name="tracker_aligner_dist_map_res" value="0.01" />
+    <param name="tracker_aligner_dist_map_size" value="10.0" />
+    <param name="tracker_aligner_dist_map_max_dist" value="0.25" />
+
+    <param name="tracker_solver_regularize_correspondences" value="true" />
+
+    <!--
+## PREPROCESS
+# - voxelization: average the points in the same cell on a grid pattern
+#   (should have better results on removing the radia effect of 2D lasers)
+# - normals computation: for point-to-plane error computation
+# - range thresholds (minimum..maximum)
+ -->
+    <param name="tracker_enable_voxelization" value="true" />
+    <!-- <param name="tracker_voxel_scale" value="0.01"/> -->
+    <param name="tracker_normals_computator_min_pts" value="5" />
+    <param name="tracker_normals_computator_radius" value="0.1" />
+    <!-- <param name="tracker_range_min" value="0.30"/> -->
+    <!-- <param name="tracker_range_max" value="10.0"/> -->
+
+  </node>
+
+</launch>

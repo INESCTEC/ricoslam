@@ -1,0 +1,30 @@
+<launch>
+
+  <arg name="odom_topic" default="/odom" />
+  <arg name="scan_topic" default="/scan" />
+  <arg name="start" default="0" />
+
+
+  <node pkg="inesctec_mrdt_slam_distmap_2d_ros" type="tracker_offline" name="tracker_offline"
+    clear_params="true" output="screen"
+    args="-b /home/datasets/paper_slam_2d/cappero_laser_odom_diag_2020-05-06-16-26-03_fixed_v2.bag
+          --odomtopic $(arg odom_topic)
+          --scantopic $(arg scan_topic)
+          --start $(arg start)
+          --log /home/ros_ws/src/inesctec_mrdt_slam_distmap_2d/inesctec_mrdt_slam_distmap_2d_ros/output/cappero_laser_odom_diag_2020-05-06-16-26-03_fixed.tum">
+    <!-- launch-prefix="gdb -ex run -\-args"> -->
+
+    <rosparam command="load"
+      file="$(dirname)/../config/tracker.yaml"
+      subst_value="true" />
+
+  </node>
+
+
+  <!--
+
+    gnuplot -e "set title 'Trajectory (top view)'; set xlabel 'X'; set ylabel 'Y'; set grid xtics ytics; plot '/home/sousarbarb97/.ros/cappero_laser_odom_diag_2020-05-06-16-26-03_fixed_ricoslam_tracker_odom.tum' using 2:3 with lines title 'XY Trajectory'" -p
+
+  -->
+
+</launch>

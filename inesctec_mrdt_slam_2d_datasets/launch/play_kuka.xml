@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="rate"  default="1.0"/>
+  <arg name="rviz"  default="false"/>
+  <arg name="start" default="0.0"/>
+
+  <include file="$(dirname)/play_rviz.xml">
+    <arg name="conf"     value="kuka"/>
+    <arg name="frame_id" value="odom_robot_link"/>
+    <arg name="rviz"     value="$(arg rviz)"/>
+  </include>
+
+  <node pkg="rosbag" type="play" name="play" output="screen"
+      args="--clock --delay 1.0 --keep-alive --start $(arg start) --rate $(arg rate) $(dirname)/../bag/kuka-halle7-log1.frontlaser.bag"/>
+
+</launch>

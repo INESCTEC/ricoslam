@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="rate"  default="1.0"/>
+  <arg name="rviz"  default="false"/>
+  <arg name="start" default="0.0"/>
+
+  <include file="$(dirname)/play_rviz.xml">
+    <arg name="conf"     value="cappero"/>
+    <arg name="frame_id" value="odom"/>
+    <arg name="rviz"     value="$(arg rviz)"/>
+  </include>
+
+  <node pkg="rosbag" type="play" name="play" output="screen"
+      args="--clock --delay 1.0 --keep-alive --start $(arg start) --rate $(arg rate) $(dirname)/../bag/cappero_laser_odom_diag_2020-05-06-16-26-03_fixed.bag"/>
+
+</launch>
