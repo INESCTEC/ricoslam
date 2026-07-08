@@ -94,36 +94,36 @@ wsdir() {
 ## Usage
 ### Build
 ```sh
-docker build -f Dockerfile.ros1noetic -t ricoslam-ros1noetic:latest .
-docker build -f Dockerfile.ros2foxy -t ricoslam-ros2foxy:latest .
-docker build -f Dockerfile.ros2humble -t ricoslam-ros2humble:latest .
-docker build -f Dockerfile.ros2jazzy -t ricoslam-ros2jazzy:latest .
-docker build -f Dockerfile.ros2rolling -t ricoslam-ros2rolling:latest .
+docker build -f Dockerfile.ros1noetic -t ricoslam-rosnoetic:latest .
+docker build -f Dockerfile.ros2foxy -t ricoslam-rosfoxy:latest .
+docker build -f Dockerfile.ros2humble -t ricoslam-roshumble:latest .
+docker build -f Dockerfile.ros2jazzy -t ricoslam-rosjazzy:latest .
+docker build -f Dockerfile.ros2rolling -t ricoslam-rosrolling:latest .
 ```
 ### Run
-**ROS 1 Noetic**
 ```sh
-distrobox create                                \
-  --name ricoslam-ros1noetic                    \
-  --image ricoslam-ros1noetic                   \
-  --hostname noetic                             \
-  --volume "/mnt/data/datasets:/home/datasets"  \
+distrobox create                                          \
+  --name ricoslam-ros<noetic|foxy|humble|jazzy|rolling>   \
+  --image ricoslam-ros<noetic|foxy|humble|jazzy|rolling>  \
+  --hostname <noetic|foxy|humble|jazzy|rolling>           \
+  --volume "/mnt/data/datasets:/home/datasets"            \
   --nvidia --yes
 
-distrobox enter ricoslam-ros1noetic
+distrobox enter ricoslam-ros<noetic|foxy|humble|jazzy|rolling>
 
 # Required for Wayland-based hosts, given that ROS 1 Noetic not compatible with
 export QT_QPA_PLATFORM=xcb
 
 sudo ldconfig --verbose /opt/stage/lib/
 
-cd /home/ros1noetic/ros_ws/src
-ln -s /home/sousarbarb97/dev/phd/inesctec_mrdt_slam_distmap_2d .
-ln -s /home/sousarbarb97/dev/inesctec/navigation-stack/simulation/stage_ros .
+cd /home/ros$ROS_DISTRO/ros_ws/src
+ln -s /home/sousarbarb97/dev/phd/ricoslam .
 
 cd ..
 wsros
 wssrrg
+
+# ROS 1 (noetic)
 catkin_make                                         \
   --source src                                      \
   --build build_release                             \
@@ -131,126 +131,7 @@ catkin_make                                         \
   -DCMAKE_BUILD_TYPE=Release                        \
   -DCMAKE_INSTALL_PREFIX=install_release
 
-# If you use the SLAM package with other nodes, also run:
-# catkin_make install -DCMAKE_INSTALL_PREFIX=install_release
-```
-
-**ROS 2 Foxy**
-```sh
-distrobox create                                \
-  --name ricoslam-ros2foxy                      \
-  --image ricoslam-ros2foxy                     \
-  --hostname foxy                               \
-  --volume "/mnt/data/datasets:/home/datasets"  \
-  --nvidia --yes
-
-distrobox enter ricoslam-ros2foxy
-
-# Required for Wayland-based hosts, given that ROS 2 Foxy not compatible with
-export QT_QPA_PLATFORM=xcb
-
-sudo ldconfig --verbose /opt/stage/lib/
-
-cd /home/ros2foxy/ros_ws/src
-ln -s /home/sousarbarb97/dev/phd/inesctec_mrdt_slam_distmap_2d .
-ln -s /home/sousarbarb97/dev/inesctec/navigation-stack/simulation/stage_ros .
-
-cd ..
-wsros
-wssrrg
-colcon build                              \
-  --build-base build_release              \
-  --install-base install_release          \
-  --merge-install --symlink-install       \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release \
-  --event-handlers status+ console_cohesion+ console_direct+ console_start_end+ console_stderr+
-```
-
-**ROS 2 Humble**
-```sh
-distrobox create                                \
-  --name ricoslam-ros2humble                    \
-  --image ricoslam-ros2humble                   \
-  --hostname humble                             \
-  --volume "/mnt/data/datasets:/home/datasets"  \
-  --nvidia --yes
-
-distrobox enter ricoslam-ros2humble
-
-# Required for Wayland-based hosts, given that ROS 2 Humble not compatible with
-export QT_QPA_PLATFORM=xcb
-
-sudo ldconfig --verbose /opt/stage/lib/
-
-cd /home/ros2humble/ros_ws/src
-ln -s /home/sousarbarb97/dev/phd/inesctec_mrdt_slam_distmap_2d .
-ln -s /home/sousarbarb97/dev/inesctec/navigation-stack/simulation/stage_ros .
-
-cd ..
-wsros
-wssrrg
-colcon build                              \
-  --build-base build_release              \
-  --install-base install_release          \
-  --merge-install --symlink-install       \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release \
-  --event-handlers status+ console_cohesion+ console_direct+ console_start_end+ console_stderr+
-```
-
-**ROS 2 Jazzy**
-```sh
-distrobox create                                \
-  --name ricoslam-ros2jazzy                     \
-  --image ricoslam-ros2jazzy                    \
-  --hostname jazzy                              \
-  --volume "/mnt/data/datasets:/home/datasets"  \
-  --nvidia --yes
-
-distrobox enter ricoslam-ros2jazzy
-
-# Required for Wayland-based hosts, given that ROS 2 Jazzy not compatible with
-export QT_QPA_PLATFORM=xcb
-
-sudo ldconfig --verbose /opt/stage/lib/
-
-cd /home/ros2jazzy/ros_ws/src
-ln -s /home/sousarbarb97/dev/phd/inesctec_mrdt_slam_distmap_2d .
-ln -s /home/sousarbarb97/dev/inesctec/navigation-stack/simulation/stage_ros .
-
-cd ..
-wsros
-wssrrg
-colcon build                              \
-  --build-base build_release              \
-  --install-base install_release          \
-  --merge-install --symlink-install       \
-  --cmake-args -DCMAKE_BUILD_TYPE=Release \
-  --event-handlers status+ console_cohesion+ console_direct+ console_start_end+ console_stderr+
-```
-
-**ROS 2 Rolling**
-```sh
-distrobox create                                \
-  --name ricoslam-ros2rolling                   \
-  --image ricoslam-ros2rolling                  \
-  --hostname rolling                            \
-  --volume "/mnt/data/datasets:/home/datasets"  \
-  --nvidia --yes
-
-distrobox enter ricoslam-ros2rolling
-
-# Required for Wayland-based hosts, given that ROS 2 Rolling not compatible with
-export QT_QPA_PLATFORM=xcb
-
-sudo ldconfig --verbose /opt/stage/lib/
-
-cd /home/ros2rolling/ros_ws/src
-ln -s /home/sousarbarb97/dev/phd/inesctec_mrdt_slam_distmap_2d .
-ln -s /home/sousarbarb97/dev/inesctec/navigation-stack/simulation/stage_ros .
-
-cd ..
-wsros
-wssrrg
+# ROS 2 (foxy|humble|jazzy|rolling)
 colcon build                              \
   --build-base build_release              \
   --install-base install_release          \

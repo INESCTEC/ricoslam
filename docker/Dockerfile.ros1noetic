@@ -5,6 +5,12 @@ SHELL ["/bin/bash", "-c"]
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
+
+
+########################
+##### DEPENDENCIES #####
+########################
+
 # Basic dependencies
 RUN apt-get update && apt-get install -y \
   sudo            \
@@ -15,7 +21,7 @@ RUN apt-get update && apt-get install -y \
   bash-completion \
   && rm -rf /var/lib/apt/lists/*
 
-# Install system dependencies
+# Install SRRG + RicoSLAM system dependencies
 RUN apt-get update && apt-get install -y \
   build-essential       \
   clang                 \
@@ -32,16 +38,37 @@ RUN apt-get update && apt-get install -y \
   libyaml-cpp-dev       \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Robot Operating System (ROS) dependencies
+# Install Cartographer dependencies
 RUN apt-get update && apt-get install -y \
-  python3-catkin-tools             \
-  python3-rosdep                   \
-  python3-rosinstall               \
-  python3-rosinstall-generator     \
-  python3-wstool                   \
-  ros-noetic-teleop-tools          \
-  ros-noetic-teleop-twist-joy      \
-  ros-noetic-teleop-twist-keyboard \
+  clang                 \
+  cmake                 \
+  g++                   \
+  git                   \
+  google-mock           \
+  libboost-all-dev      \
+  libcairo2-dev         \
+  libceres-dev          \
+  libcurl4-openssl-dev  \
+  libeigen3-dev         \
+  libgflags-dev         \
+  libgmock-dev          \
+  libgoogle-glog-dev    \
+  liblua5.2-dev         \
+  libsuitesparse-dev    \
+  lsb-release           \
+  ninja-build           \
+  protobuf-compiler     \
+  python3-sphinx        \
+  stow                  \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install GMapping dependencies
+RUN apt-get update && apt-get install -y ros-noetic-openslam-gmapping \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install SLAM Toolbox dependencies
+RUN apt-get update && apt-get install -y  \
+  ros-noetic-sparse-bundle-adjustment     \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Stage Simulator dependencies
@@ -57,17 +84,6 @@ RUN apt-get update && apt-get install -y \
   libglu1-mesa-dev  \
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /home/ros1noetic/
-RUN git clone https://github.com/sousarbarb/Stage.git
-
-RUN cd Stage                                                            && \
-  mkdir build                                                           && \
-  cd build                                                              && \
-  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/stage .. && \
-  make -j$(nproc)                                                       && \
-  make install                                                          && \
-  ldconfig --verbose /opt/stage/lib/
-
 # Install nanoflann dependencies
 RUN apt-get update && apt-get install -y \
   build-essential \
@@ -76,31 +92,93 @@ RUN apt-get update && apt-get install -y \
   libeigen3-dev   \
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /home/ros1noetic/
-RUN git clone https://github.com/jlblancoc/nanoflann.git
+# Install Robot Operating System (ROS) dependencies
+RUN apt-get update && apt-get install -y \
+  python3-catkin-tools             \
+  python3-rosdep                   \
+  python3-rosinstall               \
+  python3-rosinstall-generator     \
+  python3-wstool                   \
+  ros-noetic-map-server            \
+  ros-noetic-teleop-tools          \
+  ros-noetic-teleop-twist-joy      \
+  ros-noetic-teleop-twist-keyboard \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN cd nanoflann                      && \
+
+
+#######################################
+##### WORKSPACE DIRECTORIES SETUP #####
+#######################################
+
+# Set up workspace structure
+RUN mkdir -p /home/rosnoetic/dev       && \
+  mkdir -p /home/rosnoetic/srrg_ws/src && \
+  mkdir -p /home/rosnoetic/ros_ws/src
+
+
+
+########################
+##### INSTALLATION #####
+########################
+
+# Install Abseil manually (libabsl-dev not available on Ubuntu 20 LTS; tag 20211102.0)
+WORKDIR /home/rosnoetic/dev/
+RUN git clone https://github.com/abseil/abseil-cpp.git  && \
+  cd abseil-cpp                                         && \
+  git checkout 215105818dfde3174fe799600bb0f3cae233d0bf && \
+  mkdir build && cd build                               && \
+  cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/usr/local/stow/absl .. && \
+  ninja                                                 && \
+  ninja install                                         && \
+  cd /usr/local/stow                                    && \
+  stow absl
+
+# Install Cartographer
+WORKDIR /home/rosnoetic/dev/
+RUN git clone https://github.com/sousarbarb/cartographer.git  && \
+  cd cartographer                                             && \
+  mkdir build && cd build                                     && \
+  cmake .. -G Ninja                                           && \
+  ninja                                                       && \
+  CTEST_OUTPUT_ON_FAILURE=1 ninja test                        && \
+  ninja install
+
+# Install Stage Simulator
+WORKDIR /home/rosnoetic/dev/
+RUN git clone https://github.com/sousarbarb/Stage.git                   && \
+  cd Stage                                                              && \
+  mkdir build                                                           && \
+  cd build                                                              && \
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/stage .. && \
+  make -j$(nproc)                                                       && \
+  make install                                                          && \
+  ldconfig --verbose /opt/stage/lib/
+
+# Install nanoflann
+WORKDIR /home/rosnoetic/dev/
+RUN git clone https://github.com/jlblancoc/nanoflann.git && \
+  cd nanoflann                        && \
   mkdir build                         && \
   cd build                            && \
   export VERBOSE=true                 && \
   cmake .. -DCMAKE_BUILD_TYPE=Release && \
   sudo cmake --install .
 
-# Setup Development Environment
-WORKDIR /home/ros1noetic/
-RUN mkdir -p srrg_ws/src && \
-  mkdir -p ros_ws/src
-
-WORKDIR /home/ros1noetic/srrg_ws/src/
+# Install SRRG system (ROS 1 & ROS 2 compatible)
+WORKDIR /home/rosnoetic/srrg_ws/src/
 RUN git clone --recurse-submodules -j8 https://gitlab.com/sousarbarb_srrg-software/srrg_system.git
 
-WORKDIR /home/ros1noetic/srrg_ws/
+WORKDIR /home/rosnoetic/srrg_ws/
 RUN source /opt/ros/noetic/setup.bash                  && \
   catkin_make --force-cmake -DCMAKE_BUILD_TYPE=Release && \
   catkin_make install -DCMAKE_INSTALL_PREFIX=/opt/ros/srrg_software
 
-# Note: after building the Docker image and creating your Distrobox,
-#       you will need to create the static link with ln -s for the development code
+
+
+####################################
+##### SLAM ROS WORKSPACE SETUP #####
+####################################
 
 # Setup ROS environment in bashrc
 RUN echo "PS1='\${debian_chroot:+(\$debian_chroot)}\[\033[1;37;45m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> /etc/skel/.bashrc && \
@@ -113,10 +191,38 @@ RUN echo "PS1='\${debian_chroot:+(\$debian_chroot)}\[\033[1;37;45m\]\u@\h\[\033[
   echo 'esac' >> /etc/skel/.bashrc && \
   echo "source /opt/ros/noetic/setup.bash" >> /etc/skel/.bashrc && \
   echo "source /opt/ros/srrg_software/setup.bash 2>/dev/null || true" >> /etc/skel/.bashrc && \
-  echo "source /home/ros1noetic/ros_ws/devel_release/setup.bash 2>/dev/null || true" >> /etc/skel/.bashrc
+  echo "source /home/rosnoetic/ros_ws/devel_release/setup.bash 2>/dev/null || true" >> /etc/skel/.bashrc
+
+# Build ROS SLAM frameworks
+RUN cd /home/rosnoetic/ros_ws/src                                          && \
+  git clone https://github.com/sousarbarb/cartographer_ros.git              && \
+  git clone https://github.com/sousarbarb/hector_slam.git                   && \
+  git clone https://github.com/sousarbarb/slam_gmapping.git                 && \
+  git clone -b noetic-devel https://github.com/sousarbarb/slam_toolbox.git  && \
+  git clone https://github.com/sousarbarb/stage_ros.git
+
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash && source /opt/ros/srrg_software/setup.bash && cd /home/rosnoetic/ros_ws && catkin_make --source src --build build_release --force-cmake -DCATKIN_DEVEL_PREFIX=devel_release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install_release"
+
+
+
+
+
+################################################################################
+# NOTE:                                                                        #
+# after building the Docker image and creating your Distrobox,                 #
+# you will need to create the static link with ln -s for the development code  #
+################################################################################
+
+
+
+
+
+##############################
+##### FINAL DOCKER SETUP #####
+##############################
 
 # Fix file permissions
-RUN chown -R 1000:1000 /home/ros1noetic/
+RUN chown -R 1000:1000 /home/rosnoetic/
 
 # Set environment variables for GUI support (ROS 1 not compatible with Wayland)
 ENV QT_QPA_PLATFORM=xcb
