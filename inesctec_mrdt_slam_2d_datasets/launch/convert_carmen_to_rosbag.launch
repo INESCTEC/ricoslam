@@ -1,0 +1,18 @@
+<launch>
+
+  <!-- CARMEN dataset to convert:
+       aces | fr-clinic | fr079 | intel | mit-csail | mit-killian -->
+  <arg name="dataset" default="aces"/>
+
+  <!-- input (.clf) and output (.bag) directories.
+       trailing slash matters, though the code above now guards it too -->
+  <arg name="clf_folder" default="$(find inesctec_mrdt_slam_2d_datasets)/data/"/>
+  <arg name="bag_folder" default="$(find inesctec_mrdt_slam_2d_datasets)/bag/"/>
+
+  <node pkg="inesctec_mrdt_slam_2d_datasets" type="carmen_to_rosbag"
+        name="carmen_to_rosbag" output="screen" required="true"
+        args="-c $(find inesctec_mrdt_slam_2d_datasets)/config/carmen_to_rosbag_$(arg dataset).yaml
+              -d $(arg clf_folder)
+              -o $(arg bag_folder)"/>
+
+</launch>

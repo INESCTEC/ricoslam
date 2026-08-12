@@ -26,7 +26,6 @@ class CARMENToROSbagParser
   struct LaserParam
   {
     float m_fov;                //!< field-of-view (rad)
-    float m_resolution;         //!< resolution (rad)
     float m_range_min;          //!< minimum range (m)
     float m_range_max;          //!< maximum range (m)
     tf::StampedTransform m_tf;  //!< TF laser w.r.t. base frame
@@ -54,8 +53,8 @@ class CARMENToROSbagParser
                                                //!< parser's parametrization
     std::string m_base_frame_id;               //!< base frame id
     std::string m_log_filename;                //!< data filename
-    std::string
-        m_log_folder;  //!< folder directory of the CARMEN log data files
+    std::string m_log_folder;                  //!< CARMEN log data files dir
+    std::string m_bag_folder;   //!< output ROSbags folder (defaults to log dir)
     LaserParam m_laser_config;  //!< laser parsing parametrization
     OdomParam m_odom_config;    //!< odometry parsing parametrization
   };  // struct CARMENToROSbagParser::Param

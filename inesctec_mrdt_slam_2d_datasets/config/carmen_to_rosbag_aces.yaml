@@ -2,11 +2,11 @@ base_frame_id: base_link
 log_filename: aces.clf
 laser:
   fov: 180
-  resolution: 1.0
-  range_min: 0.00
+  # resolution: 1.0
+  range_min: 0.30
   range_max: 50.0
   ROS:
-    tf: [0,0,0]
+    tf: [0, 0, 0]
     topic: "/scan"
     frame_id: "laser"
     save_odom: false

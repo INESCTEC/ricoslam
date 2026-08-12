@@ -44,7 +44,7 @@ website.
   - `FLASER num_readings [range_readings] x y theta odom_x odom_y odom_theta ipc_timestamp ipc_hostname logger_timestamp`
     (older format, if no information is given, assume 1.0º resolution)
   - `RAWLASER laser_type start_angle field_of_view angular_resolution maximum_range accuracy remission_mode num_readings [range_readings] num_remissions [remission values] ipc_timestamp ipc_hostname logger_timestamp`
-  - `ROBOTLASER1 laser_type start_angle field_of_view angular_resolution maximum_range accuracy remission_mode num_readings [range_readings] num_remissions [remission values] laser_pose_x laser_pose_y laser_pose_theta robot_pose_x robot_pose_y robot_pose_theta laser_tv laser_rv forward_safety_dist side_safty_dist turn_axis ipc_timestamp ipc_hostname logger_timestamp`
+  - `robotlaser laser_type start_angle field_of_view angular_resolution maximum_range accuracy remission_mode num_readings [range_readings] num_remissions [remission values] laser_pose_x laser_pose_y laser_pose_theta robot_pose_x robot_pose_y robot_pose_theta laser_tv laser_rv forward_safety_dist side_safty_dist turn_axis ipc_timestamp ipc_hostname logger_timestamp`
   - Additional observations:
     - [CARMEN Logging Data and Playing It Back Documentation](https://carmen.sourceforge.net/logger_playback.html)
     - [carmen_publisher](https://github.com/artivis/carmen_publisher)
@@ -70,10 +70,10 @@ website.
   - laser total: 7374
   - total: 14749
 - laser range stats (#msgs):
-  - max_range: 50.00 m
-  - 2nd max_range: 49.91 m
-  - min_range: 0.31 m
-  - 2nd min_range: 0.34 m
+  - max_range: 50.00 (m)
+  - 2nd max_range: 49.91 (m)
+  - min_range: 0.31 (m)
+  - 2nd min_range: 0.32 (m)
 
 **fr-clinic**
 - parser stats (#msgs):
@@ -83,10 +83,10 @@ website.
   - laser total: 6917
   - total: 13834
 - laser range stats (#msgs):
-  - max_range: 81.91 m
-  - 2nd max_range: 81.83 m
-  - min_range: 0.54 m
-  - 2nd min_range: 0.55 m
+  - max_range: 81.91 (m)
+  - 2nd max_range: 81.83 (m)
+  - min_range: 0.54 (m)
+  - 2nd min_range: 0.55 (m)
 
 **fr079**
 - parser stats (#msgs):
@@ -96,10 +96,10 @@ website.
   - laser total: 4934
   - total: 13885
 - laser range stats (#msgs):
-  - max_range: 81.91 m
-  - 2nd max_range: 36.62 m
-  - min_range: 0.12 m
-  - 2nd min_range: 0.13 m
+  - max_range: 81.91 (m)
+  - 2nd max_range: 36.62 (m)
+  - min_range: 0.12 (m)
+  - 2nd min_range: 0.13 (m)
 
 **intel**
 - parser stats (#msgs):
@@ -109,10 +109,10 @@ website.
   - laser total: 13631
   - total: 40546
 - laser range stats (#msgs):
-  - max_range: 81.83 m
-  - 2nd max_range: 26.37 m
-  - min_range: 0.20 m
-  - 2nd min_range: 0.21 m
+  - max_range: 81.83 (m)
+  - 2nd max_range: 26.37 (m)
+  - min_range: 0.20 (m)
+  - 2nd min_range: 0.21 (m)
 
 **mit-csail**
 - parser stats (#msgs):
@@ -122,10 +122,10 @@ website.
   - laser total: 1988
   - total: 3976
 - laser range stats (#msgs):
-  - max_range: 81.91 m
-  - 2nd max_range: 42.40 m
-  - min_range: 0.27 m
-  - 2nd min_range: 0.28 m
+  - max_range: 81.91 (m)
+  - 2nd max_range: 42.40 (m)
+  - min_range: 0.27 (m)
+  - 2nd min_range: 0.28 (m)
 
 **mit-killian**
 - parser stats (#msgs):
@@ -135,7 +135,7 @@ website.
   - laser total: 17480
   - total: 87404
 - laser range stats (#msgs):
-  - max_range: 51.22 m
-  - 2nd max_range: 51.16 m
-  - min_range: 0.24 m
-  - 2nd min_range: 0.26 m
+  - max_range: 51.22 (m)
+  - 2nd max_range: 51.16 (m)
+  - min_range: 0.24 (m)
+  - 2nd min_range: 0.26 (m)

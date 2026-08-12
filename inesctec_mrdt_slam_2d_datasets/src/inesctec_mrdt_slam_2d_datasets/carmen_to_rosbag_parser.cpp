@@ -8,6 +8,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include <exception>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -72,7 +73,11 @@ void CARMENToROSbagParser::addOptions(
       "data,d",
       boost::program_options::value<std::string>(&m_param_.m_log_folder)
           ->required(),
-      "data folder");
+      "data folder (input .clf)")(
+      "output,o",
+      boost::program_options::value<std::string>(&m_param_.m_bag_folder)
+          ->default_value(""),
+      "output folder for the ROSbags (defaults to the data folder)");
 
 }  // void
    // CARMENToROSbagParser::addOptions(boost::program_options::options_description&)
@@ -115,14 +120,28 @@ void CARMENToROSbagParser::load()
     m_stats_.reset();
     m_tf_static_written_ = false;
 
+    std::string bag_folder = m_param_.m_bag_folder.empty()
+                                 ? m_param_.m_log_folder
+                                 : m_param_.m_bag_folder;
+    if (!bag_folder.empty() && bag_folder.back() != '/')
+    {
+      bag_folder += '/';
+    }
+    std::filesystem::create_directories(bag_folder);
+
+    // drop the .clf extension so bags are "<stem>.orig.bag" / "<stem>.sort.bag"
+    std::string bag_stem = m_param_.m_log_filename;
+    const std::size_t dot = bag_stem.find_last_of('.');
+    if (dot != std::string::npos)
+    {
+      bag_stem = bag_stem.substr(0, dot);
+    }
+    const std::string bag_prefix = bag_folder + bag_stem;
+
     m_bag_orig_.setCompression(rosbag::CompressionType::BZ2);
     m_bag_sort_.setCompression(rosbag::CompressionType::BZ2);
-    m_bag_orig_.open(
-        m_param_.m_log_folder + m_param_.m_log_filename + ".orig.bag",
-        rosbag::bagmode::Write);
-    m_bag_sort_.open(
-        m_param_.m_log_folder + m_param_.m_log_filename + ".sort.bag",
-        rosbag::bagmode::Write);
+    m_bag_orig_.open(bag_prefix + ".orig.bag", rosbag::bagmode::Write);
+    m_bag_sort_.open(bag_prefix + ".sort.bag", rosbag::bagmode::Write);
 
     for (const auto &line : lines)
     {
@@ -169,9 +188,7 @@ void CARMENToROSbagParser::load()
     uint32_t idx_scan = 0;
     uint32_t idx_tf = 0;
 
-    m_bag_orig_.open(
-        m_param_.m_log_folder + m_param_.m_log_filename + ".orig.bag",
-        rosbag::bagmode::Read);
+    m_bag_orig_.open(bag_prefix + ".orig.bag", rosbag::bagmode::Read);
 
     for (rosbag::MessageInstance msg : rosbag::View(m_bag_orig_))
     {
@@ -241,8 +258,6 @@ void CARMENToROSbagParser::readConfig()
   readParam(config, "log_filename", m_param_.m_log_filename);
 
   readParam(config["laser"], "fov", m_param_.m_laser_config.m_fov);
-  readParam(config["laser"], "resolution",
-            m_param_.m_laser_config.m_resolution);
   readParam(config["laser"], "range_min", m_param_.m_laser_config.m_range_min);
   readParam(config["laser"], "range_max", m_param_.m_laser_config.m_range_max);
 
@@ -280,8 +295,6 @@ void CARMENToROSbagParser::readConfig()
             m_param_.m_odom_config.m_publish_tf);
 
   m_param_.m_laser_config.m_fov = degToRad(m_param_.m_laser_config.m_fov);
-  m_param_.m_laser_config.m_resolution =
-      degToRad(m_param_.m_laser_config.m_resolution);
 
   m_param_.m_laser_config.m_tf.frame_id_ = m_param_.m_base_frame_id;
   m_param_.m_laser_config.m_tf.child_frame_id_ =
@@ -303,8 +316,6 @@ void CARMENToROSbagParser::printConfig()
   OFFLINFO("[%s] laser:", OFFLNAME);
   OFFLINFO("[%s] - fov       : %f (deg)", OFFLNAME,
            radToDeg(m_param_.m_laser_config.m_fov));
-  OFFLINFO("[%s] - resolution: %f (deg)", OFFLNAME,
-           radToDeg(m_param_.m_laser_config.m_resolution));
   OFFLINFO("[%s] - range_min : %f (m)", OFFLNAME,
            m_param_.m_laser_config.m_range_min);
   OFFLINFO("[%s] - range_max : %f (m)", OFFLNAME,
@@ -378,15 +389,24 @@ void CARMENToROSbagParser::parseFLaser(const std::string &line)
   double ts = 0;
   double odom_x = 0, odom_y = 0, odom_th = 0;
 
-  float angle_min = -m_param_.m_laser_config.m_fov * 0.5f;
-  float angle_max = angle_min + m_param_.m_laser_config.m_fov;
-  float angle_inc = m_param_.m_laser_config.m_resolution;
-
   std::vector<float> ranges;
   std::vector<float> intensities;
 
   str >> token;        // ignore FLASER
   str >> num_samples;  // number of laser range readings
+
+  // FLASER carries neither FOV nor angular resolution (unlike ROBOTLASER1).
+  // CARMEN convention: front SICK laser spanning 180 deg. Derive the angular
+  // resolution from the sample count so the beams span exactly [-fov/2, +fov/2]
+  // and angle_max == angle_min + (n-1)*angle_increment by construction.
+
+  const float fov = m_param_.m_laser_config.m_fov;  // rad; default 180 deg
+  const float angle_inc =
+      (num_samples > 1) ? fov / static_cast<float>(num_samples - 1) : 0.0f;
+  const float angle_min = -fov * 0.5f;
+  const float angle_max =
+      angle_min + angle_inc * static_cast<float>(num_samples - 1);
+
   ranges.resize(num_samples);
   for (int idx = 0; idx < num_samples; idx++)
   {
@@ -397,7 +417,8 @@ void CARMENToROSbagParser::parseFLaser(const std::string &line)
       m_stats_.m_max_range_2nd = m_stats_.m_max_range;
       m_stats_.m_max_range = ranges[idx];
     }
-    else if (ranges[idx] > m_stats_.m_max_range_2nd)
+    else if (ranges[idx] < m_stats_.m_max_range &&
+             ranges[idx] > m_stats_.m_max_range_2nd)
     {
       m_stats_.m_max_range_2nd = ranges[idx];
     }
@@ -407,7 +428,8 @@ void CARMENToROSbagParser::parseFLaser(const std::string &line)
       m_stats_.m_min_range_2nd = m_stats_.m_min_range;
       m_stats_.m_min_range = ranges[idx];
     }
-    else if (ranges[idx] < m_stats_.m_min_range_2nd)
+    else if (ranges[idx] > m_stats_.m_min_range &&
+             ranges[idx] < m_stats_.m_min_range_2nd)
     {
       m_stats_.m_min_range_2nd = ranges[idx];
     }

@@ -2,11 +2,11 @@ base_frame_id: base_link
 log_filename: intel.clf
 laser:
   fov: 180
-  resolution: 1.0
-  range_min: 0.00
-  range_max: 30.0
+  # resolution: 1.0
+  range_min: 0.10
+  range_max: 80.0
   ROS:
-    tf: [0,0,0]
+    tf: [0, 0, 0]
     topic: "/scan"
     frame_id: "laser"
     save_odom: false
