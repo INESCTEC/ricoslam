@@ -1,9 +1,5 @@
 #include "inesctec_mrdt_slam_2d_datasets/carmen_to_rosbag_parser.hpp"
 
-
-
-
-
 int main(int argc, char* argv[])
 {
   boost::program_options::options_description opts(
@@ -14,19 +10,14 @@ int main(int argc, char* argv[])
 
   opts.add_options()("help,h", "Display this information.");
 
-
-
   inesctec_mrdt_slam_2d_datasets::CARMENToROSbagParser parser;
 
   parser.addOptions(opts);
 
-
-
   try
   {
     boost::program_options::store(
-        boost::program_options::parse_command_line(argc, argv, opts),
-        opts_vm);
+        boost::program_options::parse_command_line(argc, argv, opts), opts_vm);
 
     if (opts_vm.count("help"))
     {
@@ -37,8 +28,8 @@ int main(int argc, char* argv[])
   catch (boost::exception& e)
   {
     std::cout << "something went wrong... (error: "
-              << boost::diagnostic_information(e) << ")"
-              << std::endl << std::endl;
+              << boost::diagnostic_information(e) << ")" << std::endl
+              << std::endl;
     std::cout << opts << std::endl;
     return 0;
   }
@@ -56,7 +47,8 @@ int main(int argc, char* argv[])
   catch (boost::exception& e)
   {
     std::cout << "something went wrong... (error: "
-              << boost::diagnostic_information(e) << ")" << std::endl << std::endl;
+              << boost::diagnostic_information(e) << ")" << std::endl
+              << std::endl;
     std::cout << opts << std::endl;
     return -1;
   }
@@ -67,22 +59,20 @@ int main(int argc, char* argv[])
     return -1;
   }
 
-
-
   try
   {
     parser.load();
   }
-  catch(const std::exception& e)
+  catch (const std::exception& e)
   {
     std::cerr << "\033[1m\033[31m"
-                  << "[inesctec_mrdt_slam_2d_datasets] Fatal error: " << e.what()
+              << "[inesctec_mrdt_slam_2d_datasets] Fatal error: " << e.what()
               << "\033[0m" << std::endl;
   }
   catch (...)
   {
     std::cerr << "\033[1m\033[31m"
-                  << "[inesctec_mrdt_slam_2d_datasets] Unexpected fatal error..."
+              << "[inesctec_mrdt_slam_2d_datasets] Unexpected fatal error..."
               << "\033[0m" << std::endl;
   }
 

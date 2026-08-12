@@ -33,7 +33,7 @@ namespace inesctec_mrdt_slam_2d_datasets
 {
 
 template <typename T>
-void readParam(const YAML::Node& config, std::string variable_name, T& variable)
+void readParam(const YAML::Node &config, std::string variable_name, T &variable)
 {
   if (config[variable_name])
   {
@@ -47,8 +47,8 @@ void readParam(const YAML::Node& config, std::string variable_name, T& variable)
 }  // template <typename T> void readParam(const YAML::Node&, std::string, T&)
 
 template <typename T>
-void readParam(const YAML::Node& config, std::string variable_name, T& variable,
-               const T& default_value)
+void readParam(const YAML::Node &config, std::string variable_name, T &variable,
+               const T &default_value)
 {
   if (config[variable_name])
   {
@@ -62,7 +62,7 @@ void readParam(const YAML::Node& config, std::string variable_name, T& variable,
    // const T&)
 
 void CARMENToROSbagParser::addOptions(
-    boost::program_options::options_description& opts)
+    boost::program_options::options_description &opts)
 {
   opts.add_options()("config,c",
                      boost::program_options::value<std::string>(
@@ -83,7 +83,7 @@ void CARMENToROSbagParser::load()
   {
     readConfig();
   }
-  catch (std::exception& e)
+  catch (std::exception &e)
   {
     std::stringstream error;
 
@@ -113,6 +113,7 @@ void CARMENToROSbagParser::load()
     parseLines(lines, logfile);
 
     m_stats_.reset();
+    m_tf_static_written_ = false;
 
     m_bag_orig_.setCompression(rosbag::CompressionType::BZ2);
     m_bag_sort_.setCompression(rosbag::CompressionType::BZ2);
@@ -123,7 +124,7 @@ void CARMENToROSbagParser::load()
         m_param_.m_log_folder + m_param_.m_log_filename + ".sort.bag",
         rosbag::bagmode::Write);
 
-    for (const auto& line : lines)
+    for (const auto &line : lines)
     {
       if (line.find("ROBOTLASER1 ") == 0)
       {
@@ -197,7 +198,7 @@ void CARMENToROSbagParser::load()
       {
         tf2_msgs::TFMessagePtr tf_msg = msg.instantiate<tf2_msgs::TFMessage>();
 
-        for (geometry_msgs::TransformStamped& transf : tf_msg->transforms)
+        for (geometry_msgs::TransformStamped &transf : tf_msg->transforms)
         {
           transf.header.seq = idx_tf++;
         }
@@ -330,8 +331,8 @@ void CARMENToROSbagParser::printConfig()
            m_param_.m_odom_config.m_publish_tf ? "enabled" : "not enabled");
 }  // void CARMENToROSbagParser::printConfig()
 
-void CARMENToROSbagParser::parseLines(std::vector<std::string>& lines,
-                                      std::ifstream& file)
+void CARMENToROSbagParser::parseLines(std::vector<std::string> &lines,
+                                      std::ifstream &file)
 {
   lines.clear();
 
@@ -347,7 +348,7 @@ void CARMENToROSbagParser::parseLines(std::vector<std::string>& lines,
 }  // void CARMENToROSbagParser::parseLines(std::vector<std::string>&,
    // std::ifstream&)
 
-void CARMENToROSbagParser::parseOdom(const std::string& line)
+void CARMENToROSbagParser::parseOdom(const std::string &line)
 {
   std::string token;
   std::stringstream str(line);
@@ -367,7 +368,7 @@ void CARMENToROSbagParser::parseOdom(const std::string& line)
   addOdomMsg(ts, x, y, th, v, vn, w);
 }  // void CARMENToROSbagParser::parseOdom(const std::string&)
 
-void CARMENToROSbagParser::parseFLaser(const std::string& line)
+void CARMENToROSbagParser::parseFLaser(const std::string &line)
 {
   std::string token;
   std::stringstream str(line);
@@ -391,18 +392,22 @@ void CARMENToROSbagParser::parseFLaser(const std::string& line)
   {
     str >> ranges[idx];
 
-    m_stats_.m_max_range = std::max(m_stats_.m_max_range, ranges[idx]);
-
-    if ((ranges[idx] > m_stats_.m_max_range_2nd) &&
-        (ranges[idx] < m_stats_.m_max_range))
+    if (ranges[idx] > m_stats_.m_max_range)
+    {
+      m_stats_.m_max_range_2nd = m_stats_.m_max_range;
+      m_stats_.m_max_range = ranges[idx];
+    }
+    else if (ranges[idx] > m_stats_.m_max_range_2nd)
     {
       m_stats_.m_max_range_2nd = ranges[idx];
     }
 
-    m_stats_.m_min_range = std::min(m_stats_.m_min_range, ranges[idx]);
-
-    if ((ranges[idx] > m_stats_.m_min_range) &&
-        (ranges[idx] < m_stats_.m_min_range_2nd))
+    if (ranges[idx] < m_stats_.m_min_range)
+    {
+      m_stats_.m_min_range_2nd = m_stats_.m_min_range;
+      m_stats_.m_min_range = ranges[idx];
+    }
+    else if (ranges[idx] < m_stats_.m_min_range_2nd)
     {
       m_stats_.m_min_range_2nd = ranges[idx];
     }
@@ -425,7 +430,7 @@ void CARMENToROSbagParser::parseFLaser(const std::string& line)
   m_stats_.m_num_msgs_flaser++;
 }  // void CARMENToROSbagParser::parseFLaser(const std::string&)
 
-void CARMENToROSbagParser::parseRobotLaser(const std::string& line)
+void CARMENToROSbagParser::parseRobotLaser(const std::string &line)
 {
   std::string token;
   std::stringstream str(line);
@@ -509,10 +514,7 @@ void CARMENToROSbagParser::parseRobotLaser(const std::string& line)
 void CARMENToROSbagParser::addOdomMsg(double ts, double x, double y, double th,
                                       double v, double vn, double w)
 {
-  if (m_stats_.m_num_msgs_total < 1)
-  {
-    addTFStaticLaserToBase(ts);
-  }
+  addTFStaticLaserToBase(ts);
 
   nav_msgs::Odometry msg;
 
@@ -596,14 +598,11 @@ void CARMENToROSbagParser::addOdomMsg(double ts, double x, double y, double th,
 
 void CARMENToROSbagParser::addLaserScanMsg(
     double ts, float angle_min, float angle_max, float angle_inc,
-    float range_min, float range_max, const std::vector<float>& ranges,
-    const std::vector<float>& intensities, double odom_x, double odom_y,
+    float range_min, float range_max, const std::vector<float> &ranges,
+    const std::vector<float> &intensities, double odom_x, double odom_y,
     double odom_th, double odom_v, double odom_vn, double odom_w)
 {
-  if (m_stats_.m_num_msgs_total < 1)
-  {
-    addTFStaticLaserToBase(ts);
-  }
+  addTFStaticLaserToBase(ts);
 
   sensor_msgs::LaserScan msg;
 
@@ -654,6 +653,13 @@ void CARMENToROSbagParser::addLaserScanMsg(
 
 void CARMENToROSbagParser::addTFStaticLaserToBase(double ts)
 {
+  if (m_tf_static_written_)
+  {
+    return;
+  }
+
+  m_tf_static_written_ = true;
+
   m_param_.m_laser_config.m_tf.stamp_.fromSec(ts);
 
   tf2_msgs::TFMessage tf_msg;
