@@ -14,6 +14,6 @@
   </include>
 
   <node pkg="rosbag" type="play" name="play" output="screen"
-      args="--clock --delay 1.0 --keep-alive --start $(arg start) --rate $(arg rate) $(dirname)/../bag/$(arg dataset).clf.sort.bag"/>
+      args="--clock --delay 1.0 --keep-alive --start $(arg start) --rate $(arg rate) $(dirname)/../bag/$(arg dataset).sort.bag"/>
 
 </launch>

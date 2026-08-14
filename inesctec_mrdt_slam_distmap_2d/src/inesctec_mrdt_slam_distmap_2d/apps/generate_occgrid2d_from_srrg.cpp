@@ -253,6 +253,10 @@ int main(int argc, char* argv[])
     mapper.setGraph(graph.get());
 
     int total_num_scans = 0;
+    int stats_local_maps_pts = 0;
+    int stats_local_maps_pts_valid = 0;
+    int stats_scan_msgs_pts = 0;
+    int stats_scan_msgs_pts_valid = 0;
 
     for (const auto& var : graph->variables())
     {
@@ -260,15 +264,51 @@ int main(int argc, char* argv[])
 
       apps::MyTypes::executeWithMatchingType(
           v,
-          [&mapper, &total_num_scans](auto* ptr)
+          [&mapper, &total_num_scans, &stats_local_maps_pts,
+           &stats_local_maps_pts_valid, &stats_scan_msgs_pts,
+           &stats_scan_msgs_pts_valid, &param](auto* ptr)
           {
             auto sensor_in_robot = ptr->measurement()->m_sensor_in_robot;
+            auto local_map_pc = ptr->measurement()->getPointCloud();
+
+            stats_local_maps_pts += local_map_pc->size();
+
+            for (const auto& pt : *local_map_pc)
+            {
+              if (pt.m_status == pcl::PointStatus::kValid)
+              {
+                stats_local_maps_pts_valid++;
+              }
+            }
 
             for (const auto& msg_pair : *ptr->measurement()->m_msgs)
             {
               mapper.pushLaserScanMsg(msg_pair.first, sensor_in_robot,
                                       msg_pair.second, ptr->graphId());
               ++total_num_scans;
+
+              auto msg = msg_pair.first;
+
+              float range_min =
+                  param.m_usable_range_min < 0
+                      ? msg->m_range_min
+                      : std::max(param.m_usable_range_min, msg->m_range_min);
+              float range_max =
+                  param.m_range_max > 0
+                      ? std::min(param.m_range_max, msg->m_range_max)
+                      : msg->m_range_max;
+
+              stats_scan_msgs_pts += msg_pair.first->m_ranges.size();
+
+              for (const auto r : msg_pair.first->m_ranges)
+              {
+                if (r > range_max || r < range_min)
+                {
+                  continue;
+                }
+
+                stats_scan_msgs_pts_valid++;
+              }
             }
           });
     }
@@ -325,9 +365,22 @@ int main(int argc, char* argv[])
                      map_to_scan_pt);
       }
 
-      std::cout << "- #map pts      : " << map.size() << std::endl;
-      std::cout << "- merger config : " << std::endl << merger_param;
+      std::cout << "- #map pts                  : " << map.size()
+                << " ( = #pts w/ offline dynamics removal!!!)" << std::endl;
+      std::cout << "- merger config             : " << std::endl
+                << merger_param;
     }
+
+    std::cout << "- total_num_scans           : " << total_num_scans
+              << std::endl;
+    std::cout << "- stats_local_maps_pts      : " << stats_local_maps_pts
+              << std::endl;
+    std::cout << "- stats_local_maps_pts_valid: " << stats_local_maps_pts_valid
+              << std::endl;
+    std::cout << "- stats_scan_msgs_pts       : " << stats_scan_msgs_pts
+              << std::endl;
+    std::cout << "- stats_scan_msgs_pts_valid : " << stats_scan_msgs_pts_valid
+              << " ( = #pts without offline dynamics removal...)" << std::endl;
 
     mapper.updateMap();
 
