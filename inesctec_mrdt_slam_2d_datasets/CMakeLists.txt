@@ -46,6 +46,13 @@ catkin_package(
     yaml-cpp
 )
 
+catkin_install_python(
+  PROGRAMS
+    scripts/clf2bag.py
+  DESTINATION
+    ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 link_directories(${catkin_LIBRARY_DIRS})
 
 include_directories(
