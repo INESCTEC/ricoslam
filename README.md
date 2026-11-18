@@ -1,5 +1,5 @@
 # RicoSLAM: Localization and Mapping in Dynamic Environments
-
+ 
 A Simultaneous Localization and Mapping (SLAM) system for
 dynamic industrial environments built around a distance map-based tracking
 front-end, a factor graph optimization back-end using the
@@ -7,11 +7,13 @@ front-end, a factor graph optimization back-end using the
 online and offline dynamics filtering through ray tracing, and a novel distance
 map-based global bundle adjustment formulation.
 The front-end tracker supports the distance map-based registration formulations
-proposed in the PhD Thesis and also Iterative Closest Point (ICP) with
-distance map-guided data association.
+proposed in the PhD Thesis and in the ROBOT2026 paper
+[Unsigned Distance Maps on 2D Point Cloud Registration](https://doi.org/10.48550/arXiv.2609.25932),
+and also Iterative Closest Point (ICP) with distance map-guided data
+association.
 RicoSLAM has been deployed on-site across six industrial companies in the
 scope of the GreenAuto and related projects.
-
+ 
 ## Setup
 ### Repository
 ```sh
@@ -20,7 +22,7 @@ cd ${HOME}/ros_ws/src
 
 git clone --recurse-submodules -j8 github.com:sousarbarb/inesctec_mrdt_slam_distmap_2d.git
 ```
-
+ 
 ### SRRG Software
 ```sh
 sudo apt update
@@ -54,7 +56,7 @@ source /opt/ros/srrg_software/setup.bash
 ```
 See more information in
 [https://gitlab.com/sousarbarb_srrg-software/srrg_system](https://gitlab.com/sousarbarb_srrg-software/srrg_system).
-
+ 
 ### ROS 1 (other SLAM algorithms)
 ```sh
 sudo apt install -y ros-noetic-slam-gmapping ros-noetic-grid-map ros-noetic-hector-slam* ros-noetic-slam-karto* ros-noetic-slam-toolbox*
@@ -63,7 +65,7 @@ sudo apt install -y ros-noetic-slam-gmapping ros-noetic-grid-map ros-noetic-hect
 ```sh
 # apt repository
 sudo apt install -y libyaml-cpp-dev
-
+ 
 # Source installation
 git clone https://github.com/jbeder/yaml-cpp.git
 cd yaml-cpp/
@@ -73,7 +75,7 @@ cmake .. -DYAML_BUILD_SHARED_LIBS=on -DYAML_CPP_INSTALL=true
 make
 make install
 ```
-
+ 
 ## Usage
 ### Build
 **ROS 1 (Noetic)**
@@ -90,7 +92,7 @@ source devel_release/setup.bash
 # catkin_make --source src --build build_<debug|release|reldebinfo|minsizerel> --force-cmake -DCATKIN_DEVEL_PREFIX=devel_<debug|release|reldebinfo|minsizerel> -DCMAKE_BUILD_TYPE=<Debug|Release|RelWithDebInfo|MinSizeRel> -DCMAKE_INSTALL_PREFIX=install_<debug|release|reldebinfo|minsizerel>
 # source devel_<debug|release|reldebinfo|minsizerel>/setup.bash
 ```
-
+ 
 ### Launch
 - tracker
 - tracker_offline
@@ -100,7 +102,7 @@ source devel_release/setup.bash
 See further information on the launch files in the
 [inesctec_mrdt_slam_distmap_2d_ros/launch](/inesctec_mrdt_slam_distmap_2d_ros/launch/)
 folder.
-
+ 
 **How to enable debug with GDB?**
 - build with `Debug` or `RelWithDebInfo` CMake configurations
 - uncomment `launch-prefix="gdb -ex run --args"` for the node executable
@@ -111,25 +113,27 @@ folder.
 rosrun inesctec_mrdt_slam_distmap_2d_ros tracker_offline --help
 rosrun inesctec_mrdt_slam_distmap_2d_ros slam_offline --help
 ```
-
+ 
 ## License
-
+ 
 Distributed under the GNU AGPLv3 license. See `LICENSE` for more information.
-
+ 
 ## Citation
-
-If you use material from this thesis in a work that leads to a scientific
-publication, please consider citing it as follows.
-
+ 
+If you use material from this repository in a work that leads to a scientific
+publication, please consider citing the following works.
+ 
+### PhD Thesis
+ 
 **Plain Text**
-
+ 
 R.B. Sousa,
 "RicoSLAM: Localization and Mapping in Dynamic Environments,"
 PhD Thesis, Faculty of Engineering, University of Porto, Porto, Portugal,
 2026.
-
+ 
 **BibTeX**
-
+ 
 ```bibtex
 @PHDTHESIS{sousa2026thesis,
   author  = {Ricardo B. Sousa},
@@ -139,9 +143,37 @@ PhD Thesis, Faculty of Engineering, University of Porto, Porto, Portugal,
   year    = {2026},
   type    = {{PhD} Thesis}}
 ```
-
+ 
+### Unsigned Distance Maps on 2D Point Cloud Registration
+ 
+Presented at ROBOT2026: 9th Iberian Robotics Conference (Barcelona, Spain).
+The proceedings are not yet published, so the preprint citation is provided
+for now.
+ 
+**Plain Text**
+ 
+R.B. Sousa, G. Grisetti, H.M. Sobreira, C.A. Silva, and A.P. Moreira,
+"Unsigned Distance Maps on 2D Point Cloud Registration,"
+arXiv preprint arXiv:2609.25932,
+2026.
+ 
+**BibTeX**
+ 
+```bibtex
+@MISC{sousa2026robot,
+  author        = {Ricardo B. Sousa and Giorgio Grisetti and
+                   H{\'{e}}ber Miguel Sobreira and Carlos Andr{\'{e}} Silva and
+                   Ant{\'{o}}nio Paulo Moreira},
+  title         = {Unsigned Distance Maps on {2D} Point Cloud Registration},
+  year          = {2026},
+  eprint        = {2609.25932},
+  archivePrefix = {arXiv},
+  doi           = {10.48550/arXiv.2609.25932},
+  note          = {Presented at ROBOT2026: 9th Iberian Robotics Conference}}
+```
+ 
 ## Contacts
-
+ 
 If you have any questions or you want to know more about this work, please
 contact:
 - **Ricardo B. Sousa**
@@ -163,9 +195,8 @@ contact:
   ([github](https://github.com/grisetti),
   [gitlab](https://gitlab.com/grisetti),
   [google-scholar](https://scholar.google.com/citations?user=yD-SFG4AAAAJ))
-
 ## Acknowledgements
-
+ 
 - [5dpo Robotics Team](https://5dpo.github.io/)
 - [CRIIS - Centre for Robotics in Industry and Intelligent Systems](https://www.inesctec.pt/en/centres/criis),
   [INESC TEC - Institute for Systems and Computer Engineering, Technology and Science](https://www.inesctec.pt/en/)
@@ -175,17 +206,16 @@ contact:
   from the
   [Department of Computer, Control, and Management Engineering Antonio Ruberti (DIAG)](https://www.diag.uniroma1.it/en)
   of [Sapienza University of Rome](https://www.uniroma1.it/en)
-
 ## Funding
-
+ 
 **GreenAuto: Green innovation for the Automotive Industry**
-
+ 
 This work was co-financed by Component 5 - Capitalization and Business
 Innovation, integrated in the Resilience Dimension of the Recovery and
 Resilience Plan within the scope of the Recovery and Resilience Mechanism
 (MRR) of the European Union (EU), framed in the Next Generation EU, for the
 period 2021-2026, within project GreenAuto, with reference 54.
-
+ 
 - **Operation Code:** 02/C05-i01.02/2022.PC644867037-00000013
 - **Beneficiary:** Peugeot Citröen Automóveis Portugal, S.A.
 - **Work Package:** WP10 - Automated logistics for the automotive industry
@@ -202,3 +232,4 @@ period 2021-2026, within project GreenAuto, with reference 54.
 - **Duration:** 51 months
 - **URL:**
   [https://transparencia.gov.pt/en/fundos-europeus/prr/beneficiarios-projetos/projeto/02/C05-i01.02/2022.PC644867037-00000013/](https://transparencia.gov.pt/en/fundos-europeus/prr/beneficiarios-projetos/projeto/02/C05-i01.02/2022.PC644867037-00000013/)
+ 
